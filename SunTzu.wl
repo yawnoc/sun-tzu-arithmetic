@@ -217,10 +217,10 @@ MultiplyAnimation[
         Do[
           (* Initial *)
           Sow @ MakeGrid[
-            MakeGridRow[gridColumns, upperDigitList],
+            MakeGridRow[gridColumns, upper],
             MakeGridRow[gridColumns, 0],
             MakeGridRow[gridColumns, middle],
-            MakeGridRow[gridColumns, lowerDigitList,
+            MakeGridRow[gridColumns, lower,
               "TrailingSpaces" -> p
             ],
             (* Finished upper digits *)
@@ -230,10 +230,10 @@ MultiplyAnimation[
           Do[
             (* Highlight current digits *)
             Sow @ MakeGrid[
-              MakeGridRow[gridColumns, upperDigitList],
+              MakeGridRow[gridColumns, upper],
               MakeGridRow[gridColumns, 0],
               MakeGridRow[gridColumns, middle],
-              MakeGridRow[gridColumns, lowerDigitList,
+              MakeGridRow[gridColumns, lower,
                 "TrailingSpaces" -> p
               ],
               (* Finished upper digits *)
@@ -249,13 +249,13 @@ MultiplyAnimation[
             temporary = upperDigit * lowerDigit;
             (* Highlight product of current digits *)
             Sow @ MakeGrid[
-              MakeGridRow[gridColumns, upperDigitList],
+              MakeGridRow[gridColumns, upper],
               MakeGridRow[gridColumns, temporary,
                 "HideLoneZero" -> False,
                 "TrailingSpaces" -> p + q
               ],
               MakeGridRow[gridColumns, middle],
-              MakeGridRow[gridColumns, lowerDigitList,
+              MakeGridRow[gridColumns, lower,
                 "TrailingSpaces" -> p
               ],
               (* Finished upper digits *)
@@ -276,10 +276,10 @@ MultiplyAnimation[
             middle += temporary * 10 ^ (p + q);
             (* Highlight current digits *)
             Sow @ MakeGrid[
-              MakeGridRow[gridColumns, upperDigitList],
+              MakeGridRow[gridColumns, upper],
               MakeGridRow[gridColumns, 0],
               MakeGridRow[gridColumns, middle],
-              MakeGridRow[gridColumns, lowerDigitList,
+              MakeGridRow[gridColumns, lower,
                 "TrailingSpaces" -> p
               ],
               (* Finished upper digits *)
@@ -293,10 +293,10 @@ MultiplyAnimation[
         , {p, pMax, 0, -1}];
         (* Final *)
         Sow @ MakeGrid[
-          MakeGridRow[gridColumns, upperDigitList],
+          MakeGridRow[gridColumns, upper],
           MakeGridRow[gridColumns, 0],
           MakeGridRow[gridColumns, middle],
-          MakeGridRow[gridColumns, lowerDigitList],
+          MakeGridRow[gridColumns, lower],
           (* Finished upper digits *)
           StyleGridCell["finished", 1, {n - pMax, n}],
           (* Result *)
