@@ -72,29 +72,33 @@ MakeGridRowOptionsPattern = OptionsPattern @ {
 
 MakeGridRow[
   gridColumns_Integer,
-  digits : (_Integer | List[___Integer]),
+  digitList : List[___Integer],
   opts : MakeGridRowOptionsPattern
 ] :=
-  Module[
-   {digitList,
-    trailingSpaces,
-    hideLoneZero
-   },
-    If[Head[digits] === Integer,
-      digitList = IntegerDigits[digits],
-      digitList = digits
-    ];
+  Module[{trailingSpaces, hideLoneZero, displayedDigitList},
     trailingSpaces = OptionValue["TrailingSpaces"];
     hideLoneZero = OptionValue["HideLoneZero"];
-    If[digitList == {0} && hideLoneZero,
-      digitList = {}
+    displayedDigitList = digitList;
+    If[displayedDigitList == {0} && hideLoneZero,
+      displayedDigitList = {}
     ];
     PadLeft[
-      Join[digitList, ConstantArray[Null, trailingSpaces]],
+      Join[
+        displayedDigitList,
+        ConstantArray[Null, trailingSpaces]
+      ],
       gridColumns,
       Null
     ]
   ];
+
+
+MakeGridRow[
+  gridColumns_,
+  integer_Integer,
+  opts : MakeGridRowOptionsPattern
+] :=
+  MakeGridRow[gridColumns, IntegerDigits[integer], opts];
 
 
 (* ::Subsection:: *)
