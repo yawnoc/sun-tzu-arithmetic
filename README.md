@@ -24,5 +24,21 @@ see Vol.&nbsp;I ¶8 & ¶13 (multiplication) and ¶9 & ¶14 (division).
 
 ## Division
 
+### 100 ÷ 6 = 16 + 4/6
+
+![Sun Tzŭ division: 100 ÷ 6](divide-100-6.gif)
+
+### 1989 ÷ 64 = 31 + 5/64
+
+![Sun Tzŭ division: 1989 ÷ 64](divide-1989-64.gif)
+
+### 6561 ÷ 9 = 729
+
+![Sun Tzŭ division: 6561 ÷ 9](divide-6561-9.gif)
+
+### 97531 ÷ 4 = 24382 + 3/4
+
+![Sun Tzŭ division: 97531 ÷ 4](divide-97531-4.gif)
+
 [animations]: https://yawnoc.github.io/sun-tzu/code/animations.html
 [sun-tzu]: https://yawnoc.github.io/sun-tzu/
