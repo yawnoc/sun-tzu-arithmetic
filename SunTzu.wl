@@ -106,6 +106,7 @@ MakeGridRow[
 
 
 CellStyles = Association[
+  "none" -> Transparent,
   "current" -> Yellow,
   "finished" -> Gray,
   "fraction" -> Pink,
@@ -315,6 +316,174 @@ MultiplyAnimation[
       frameList //
         If[OptionValue[Export],
           ExportGif["multiply", upper, lower],
+          Identity
+        ]
+    }
+  ];
+
+
+(* ::Subsection:: *)
+(*DivideAnimation*)
+
+
+DivideAnimation[
+  dividend_Integer,
+  divisor_Integer,
+  opts: AnimationOptionsPattern
+] :=
+  Module[
+   {pMax, qMax, n,
+    upper, middle,
+    frameList,
+    upperDigit, temporary,
+    noRemainder
+   },
+    (*
+      Exponents (numbers of digits, minus one):
+        pMax (dividend)
+        qMax (divisor)
+      Digits indexed from most to least significant:
+        p = pMax, ..., 1, 0 (upper)
+        q = qMax, ..., 1, 0 (lower)
+    *)
+    pMax = IntExponent[dividend];
+    qMax = IntExponent[divisor];
+    (*
+      The number of columns of the grid:
+        n
+    *)
+    n = pMax + qMax + 1;
+    (* Initialise upper and middle rows *)
+    upper = 0;
+    middle = dividend;
+    (* Reap frames for animation *)
+    (*
+      Each frame shall consist of a grid of 4 rows:
+        1. Upper
+        2. Temporary (result of product to be removed)
+        3. Middle
+        4. Lower (divisor)
+     *)
+    frameList =
+      Last @ Last @ Reap[
+        (* Loop through the upper indices *)
+        Do[
+          (* Highlight divisor *)
+          Sow @ MakeGrid[
+            MakeGridRow[n, upper / 10 ^ (p + 1),
+              "TrailingSpaces" -> p + 1
+            ],
+            MakeGridRow[n, 0],
+            MakeGridRow[n, middle],
+            MakeGridRow[n, divisor,
+              "TrailingSpaces" -> p
+            ],
+            (* Divisor *)
+            StyleGridCell["current", 4, {n - (p + qMax), n - p}]
+          ];
+          (* Determine upper digit *)
+          upperDigit = Quotient[
+            Quotient[middle, 10 ^ p],
+            divisor
+          ];
+          (* Update upper number *)
+          upper += upperDigit * 10 ^ p;
+          (* Highlight current upper digit and divisor *)
+          Sow @ MakeGrid[
+            MakeGridRow[n, upper / 10 ^ p,
+              "HideLoneZero" -> False,
+              "TrailingSpaces" -> p
+            ],
+            MakeGridRow[n, 0],
+            MakeGridRow[n, middle],
+            MakeGridRow[n, divisor,
+              "TrailingSpaces" -> p
+            ],
+            (* Current upper digit *)
+            StyleGridCell["current", 1, n - p],
+            (* Divisor *)
+            StyleGridCell["current", 4, {n - (p + qMax), n - p}]
+          ];
+          (* Multiply current upper digit and divisor *)
+          temporary = upperDigit * divisor;
+          (* Highlight product to be removed *)
+          Sow @ MakeGrid[
+            MakeGridRow[n, upper / 10 ^ p,
+              "HideLoneZero" -> False,
+              "TrailingSpaces" -> p
+            ],
+            MakeGridRow[n, temporary,
+              "HideLoneZero" -> False,
+              "TrailingSpaces" -> p
+            ],
+            MakeGridRow[n, middle],
+            MakeGridRow[n, divisor,
+              "TrailingSpaces" -> p
+            ],
+            (* Current upper digit *)
+            StyleGridCell["current", 1, n - p],
+            (* Product to be removed *)
+            StyleGridCell[
+              "temporary", 2, {
+                n - p - IntExponent[temporary],
+                n - p
+              }
+            ],
+            (* Divisor *)
+            StyleGridCell["current", 4, {n - (p + qMax), n - p}]
+          ];
+          (* Update middle number *)
+          middle -= temporary * 10 ^ p;
+          (* Highlight current upper digit and divisor *)
+          Sow @ MakeGrid[
+            MakeGridRow[n, upper / 10 ^ p,
+              "HideLoneZero" -> False,
+              "TrailingSpaces" -> p
+            ],
+            MakeGridRow[n, 0],
+            MakeGridRow[n, middle],
+            MakeGridRow[n, divisor,
+              "TrailingSpaces" -> p
+            ],
+            (* Current upper digit *)
+            StyleGridCell["current", 1, n - p],
+            (* Divisor *)
+            StyleGridCell["current", 4, {n - (p + qMax), n - p}]
+          ];
+        , {p, pMax, 0, -1}];
+        (* Final *)
+        noRemainder = middle == 0;
+        Sow @ MakeGrid[
+          MakeGridRow[n, upper],
+          MakeGridRow[n, 0],
+          MakeGridRow[n, middle],
+          MakeGridRow[n, divisor],
+          (* Result (quotient) *)
+          StyleGridCell["result", 1, {n - IntExponent[upper], n}],
+          (* Result (remainder) *)
+          StyleGridCell[
+            If[noRemainder, "none", "fraction"],
+            3, {n - IntExponent[middle], n}
+          ],
+          (* Result (divisor) *)
+          StyleGridCell[
+            If[noRemainder, "finished", "fraction"],
+            4, {n - qMax, n}
+          ]
+        ];
+      ];
+    (* Return result and list of frames *)
+    {
+      If[noRemainder,
+        upper,
+        Inactive[Plus][
+          upper,
+          Inactive[Divide][middle, divisor]
+        ]
+      ],
+      frameList //
+        If[OptionValue[Export],
+          ExportGif["divide", dividend, divisor],
           Identity
         ]
     }
