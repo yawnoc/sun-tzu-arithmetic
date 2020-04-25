@@ -40,5 +40,5 @@ see Vol.&nbsp;I ¶8 & ¶13 (multiplication) and ¶9 & ¶14 (division).
 
 ![Sun Tzŭ division: 97531 ÷ 4](divide-97531-4.gif)
 
-[animations]: https://yawnoc.github.io/sun-tzu/code/animations.html
+[animations]: https://yawnoc.github.io/sun-tzu/code/animations
 [sun-tzu]: https://yawnoc.github.io/sun-tzu/
