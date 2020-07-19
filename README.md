@@ -5,8 +5,7 @@ which appear in my [translation of 《孫子算經》,
 "Sun Tzŭ's Computational Classic"][sun-tzu];
 see Vol.&nbsp;I ¶8 & ¶13 (multiplication) and ¶9 & ¶14 (division).
 
-This code and images in this repository are licensed under
-"MIT No Attribution" (MIT-0), see [LICENSE](LICENSE).
+Licensed under "MIT No Attribution" (MIT-0), see [LICENSE](LICENSE).
 
 ##  Multiplication
 
